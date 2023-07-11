@@ -2,13 +2,12 @@ package sg.edu.rp.c346.id22019575.songstorer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -18,21 +17,26 @@ public class MainActivity extends AppCompatActivity {
     Button btnInsert, btnShowList;
     RadioGroup rgStars;
     EditText etYear, etSingers, etTitle;
-    ArrayAdapter adapter;
-    ListView lv;
+    ArrayList<Song> al;
+    ArrayAdapter<Song> aa;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnInsert = findViewById(R.id.Insert);
-        btnShowList = findViewById(R.id.ShowList);
+        btnInsert = findViewById(R.id.insert);
+        btnShowList = findViewById(R.id.showList);
         rgStars = findViewById(R.id.Stars);
         etSingers = findViewById(R.id.Singers);
         etTitle = findViewById(R.id.Title);
         etYear = findViewById(R.id.Year);
-        lv = findViewById(R.id.lv);
+
+
+        al = new ArrayList<Song>();
+        aa = new ArrayAdapter<Song>(this,
+                android.R.layout.simple_list_item_1, al);
 
 
         btnInsert.setOnClickListener(new View.OnClickListener() {
@@ -61,16 +65,12 @@ public class MainActivity extends AppCompatActivity {
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create the DBHelper object, passing in the
-                // activity's Context
-                DBHelper db = new DBHelper(MainActivity.this);
+                Song target = al.get(0);
 
-                // Insert a task
-                ArrayList<String> data = db.getTaskContent();
-                db.close();
-
-                adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
-                lv.setAdapter(adapter);
+                Intent i = new Intent(MainActivity.this,
+                        ListviewActivity.class);
+                i.putExtra("data", (CharSequence) target);
+                startActivity(i);
 
             }
         });
