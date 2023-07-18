@@ -18,7 +18,8 @@ public class ListviewActivity extends AppCompatActivity {
     ListView lv;
     Song data;
     ArrayList<Song> al;
-    ArrayAdapter<Song> aa;
+    //ArrayAdapter<Song> aa;
+    CustomAdapter customAdapter;
     Button button;
 
     @Override
@@ -33,9 +34,11 @@ public class ListviewActivity extends AppCompatActivity {
         data = (Song) i.getSerializableExtra("data");
 
         al = new ArrayList<Song>();
-        aa = new ArrayAdapter<Song>(this,
-                android.R.layout.simple_list_item_1, al);
-        lv.setAdapter(aa);
+        //aa = new ArrayAdapter<Song>(this,
+         //       android.R.layout.simple_list_item_1, al);
+        //lv.setAdapter(aa);
+        customAdapter = new CustomAdapter(this, R.layout.row, al);
+        lv.setAdapter(customAdapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,18 +55,21 @@ public class ListviewActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                public static void showSongs (ArrayList < Song > al) {
-
-                    for (int x = 0; x < al.size(); x++) {
-                        if (data.getStar() == 5) {
-                            System.out.println(data.getTitle());
-                        }
-                    }
-                }
+                // Show only songs with 5 stars
+                showSongsWithFiveStars();
             }
         });
 
-
-
     }
+
+    private void showSongsWithFiveStars() {
+        al.clear();
+        for (Song song : al) {
+            if (song.getStar() == 5) {
+                al.add(song);
+            }
+        }
+        customAdapter.notifyDataSetChanged();
+    }
+
 }
