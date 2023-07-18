@@ -55,8 +55,11 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DBHelper dbh = new DBHelper(EditActivity.this);
-                data.setNoteContent(etContent.getText().toString());
-                dbh.updateNote(data);
+                data.setTitle(etTitle.getText().toString());
+                data.set_id(Integer.parseInt(tvId.getText().toString()));
+                data.setSingers(etSingers.getText().toString());
+                data.setYear(Integer.parseInt(etYear.getText().toString()));
+                dbh.updateSong(data);
                 dbh.close();
                 finish();
             }
